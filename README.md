@@ -1,5 +1,5 @@
 # AWSMobilePushNotification
-Serverless Mobile-Push-Notification server-side client and database abstraction/management for sending mobile push notification to APNS and GCM utilizing [Amazon DynamoDB] and [Amazon SimpleNotificationService]
+Serverless Mobile-Push-Notification server-side client and database abstraction/management for sending mobile push notification to APNS and GCM utilizing [Amazon DynamoDB] and [Amazon SimpleNotificationService] implemented with .NET (Standards 1.6)
 
 ###  Key Features and Functionality
 - Provides a **UserId and Token** level abstraction for your server-side application enabling you to only work with 'server-side defined `User` concept' and lifting the burden of token management/storage/validation. 
@@ -45,7 +45,9 @@ So to register a notification-sendable enpoint to your system you must specify b
 
 ## Getting Started 
 
-Requirements: Amazon SNS and Amazon DynamoDB
+Nuget Package will be available soon.
+
+Requirements: `.NET Standards 1.6` and Amazon SNS , Amazon DynamoDB
 
 1. Obtain `Platform Application ARN` from [AWS SNS] using either your APNS Certificate or GCM API Keys
 2. Create DynamoDB Tables at the first run (See example code below)
@@ -184,4 +186,4 @@ MIT
 [AWS SNS]: <https://eu-west-1.console.aws.amazon.com/sns/v2/home?region=eu-west-1#/applications>
 [WIKI]: <../../wiki>
 [Library Overview]: <ReadMeImages/LibraryDiagram.png>
-[DynamoDBSnapshot]: <ReadmeImages/DynamoDBSnapshot.png>
+[DynamoDBSnapshot]: <ReadMeImages/DynamoDBSnapshot.png>
