@@ -1,16 +1,16 @@
 # AWSMobilePushNotification
-Serverless Mobile-Push-Notification server-side client and database abstraction/management for sending mobile push notification to APNS and GCM utilizing [Amazon DynamoDB] and [Amazon SimpleNotificationService] implemented with .NET (Standards 1.6)
+Serverless Mobile-Push-Notification server-side client and database abstraction/management for sending mobile push notifications to APNS and GCM utilizing [Amazon DynamoDB] and [Amazon SimpleNotificationService] implemented with .NET (Standards 1.6)
 
 ###  Key Features and Functionality
 - Provides a **UserId and Token** level abstraction for your server-side application enabling you to only work with 'server-side defined `User` concept' and lifting the burden of token management/storage/validation. 
 
 - NoSQL DynamoDB provides limitless auto scaling and incredible speed for your application's need. 
 
-- `Tagging` enables to send batch notifications to multiple `Users` assigned to tags.
+- `Tagging` enables sending batch notifications to multiple `Users` assigned to tags.
 
-- Handles unavailable devices after notification publish or optionally sets TimeToLive to clean-up later.
+- Handles unavailable devices after a publish or optionally sets TimeToLive to clean-up later.
 
-- Optionally writes logs to DynamoDB of sent notifications to query later. 
+- Optionally writes logs of sent notifications to DynamoDB for querying later. 
 
 
 ## Overview
@@ -19,7 +19,7 @@ Simplified visual summary
 
 **Coding Workflow**
 
-All the functions follows the same pattern like AWSSDK.
+All the functions follows the same pattern, like AWSSDK.
 
 `Create Request -> Send Request -> Retrieve Response`
 
@@ -29,17 +29,17 @@ All the functions follows the same pattern like AWSSDK.
 4) Evaluate the response
 
 ## Glossary and Undestanding the working logic
-Library uses DynamoDB for the database and its incredibly fast. It creates and handles tables for certain functions, but the tables are available to you for adding extra functionalities or queries that are up to you.
+Library uses DynamoDB as the database and its incredibly fast. It creates and handles tables for certain functions, but the tables are available to you for adding extra functionalities or queries that are up to you.
 
 Library provides an abstraction to your back-end's `Users` and internally stores / matches them as notification-sendable devices, letting you to work with only back-end specific identifiers which is called `User` in this library. A `User` can have multiple `Subscribers`, meaning mutliple devices that is available for sending a notification. For instance, a user logged in to multiple devices with the same account. In the absence of `User`, (Userless back-end logic) 'Device Identifier' of the mobile device can be used as an user identifier. 
 
 `User` is a collection of `Subscribers`. Its only represented by UserID
 
-`Subscriber` is tuple of UserId and NotificationToken. This represents a single notification-sendable endpoint for a User. Its the primary key and has to be unique. Without UserId its the tuple of DeviceId and NotificationToken. Still unique.
+`Subscriber` is a tuple of UserId and NotificationToken. This represents a single notification-sendable endpoint for a User. Its the primary key and has to be unique. Without the UserId it should be the tuple of DeviceId and NotificationToken. Still unique.
 
 ![DynamoDBSnapshot]
 
-So to register a notification-sendable enpoint to your system you must specify both UserId and NotificationToken. In other words, a `Subscriber` can only be registered not `User`. However, when publishing a notification you can publish both to a `User` or a `Subscriber`. `User` notifications will be send to all of its registered endpoints(Subscribers), since its a collection of endpoints, which is mostly the desired functionality.
+So, to register a notification-sendable endpoint to your system you must specify both UserId and NotificationToken. In other words, a `Subscriber` can only be registered, not an `User`. However, when publishing a notification you can publish both to an `User` or to a `Subscriber`. `User` notifications will be sent to all of its registered endpoints(Subscribers), since its a collection of endpoints, which is mostly the desired functionality.
 
 `AppIdentfier` property is used for DynamoDB table prefixes so that each of the back-end application is working with seperate tables with selected provisioned throughputs.
 
@@ -91,7 +91,7 @@ public abstract class DefaultAWSMobilePushNotificationConfigProvider : IAWSMobil
 }
 ```
 
-Creating required DynamoDB tables at the first run (you can adjust provisioned throughput at anytime)
+Create required DynamoDB tables at the first run (you can adjust provisioned throughput at anytime)
 
 ```csharp
 CreateApplicationTablesRequest request = new CreateApplicationTablesRequest(MY_IMPLEMENTATION_OF_INTERFACE);
@@ -109,7 +109,7 @@ var result = await request.SendAsync();
             
 ```
 
-Register the User first after retrieving its token from the device
+Register the User first, after retrieving its token from the device
 
 ```csharp
 RegisterSubscriberRequest request = new RegisterSubscriberRequest(MY_IMPLEMENTATION_OF_INTERFACE);
