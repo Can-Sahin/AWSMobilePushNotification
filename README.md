@@ -1,6 +1,8 @@
 # AWSMobilePushNotification
 Serverless Mobile-Push-Notification server-side client and database abstraction/management for sending mobile push notifications to APNS and GCM utilizing [Amazon DynamoDB] and [Amazon SimpleNotificationService] implemented with .NET (Standards 1.6)
 
+Designed initially for integrating `Mobile Push Notification` with scalable, serverless and stateless environments, like AWS Lambda
+
 ###  Key Features and Functionality
 - Provides a **UserId and Token** level abstraction for your server-side application enabling you to only work with 'server-side defined `User` concept' and lifting the burden of token management/storage/validation. 
 
