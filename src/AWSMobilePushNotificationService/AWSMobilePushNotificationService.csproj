@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <OutputType>Library</OutputType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.5"/>
+    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.3.0.24"/>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1"/>
+  </ItemGroup>
+</Project>
