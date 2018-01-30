@@ -15,7 +15,7 @@ Serverless Mobile-Push-Notification server-side client and database abstraction/
 
 ## Overview
 Simplified visual summary
-![Library Overview](ReadmeImages/LibraryDiagram.png)
+![Library Overview]
 
 **Coding Workflow**
 
@@ -37,7 +37,7 @@ Library provides an abstraction to your back-end's `Users` and internally stores
 
 `Subscriber` is tuple of UserId and NotificationToken. This represents a single notification-sendable endpoint for a User. Its the primary key and has to be unique. Without UserId its the tuple of DeviceId and NotificationToken. Still unique.
 
-![DynamoDBSnapshot](ReadmeImages/DynamoDBSnapshot.png)
+![DynamoDBSnapshot]
 
 So to register a notification-sendable enpoint to your system you must specify both UserId and NotificationToken. In other words, a `Subscriber` can only be registered not `User`. However, when publishing a notification you can publish both to a `User` or a `Subscriber`. `User` notifications will be send to all of its registered endpoints(Subscribers), since its a collection of endpoints, which is mostly the desired functionality.
 
@@ -179,7 +179,9 @@ List<PublishToSNSResult> results = await request.SendAsync();
 MIT
 
 
-[Amazon DynamoDB]: "https://aws.amazon.com/dynamodb/"
-[Amazon SimpleNotificationService]: "https://aws.amazon.com/sns/"
-[AWS SNS]: "https://eu-west-1.console.aws.amazon.com/sns/v2/home?region=eu-west-1#/applications"
-[WIKI]: "../../wiki"
+[Amazon DynamoDB]: <https://aws.amazon.com/dynamodb/>
+[Amazon SimpleNotificationService]: <https://aws.amazon.com/sns/>
+[AWS SNS]: <https://eu-west-1.console.aws.amazon.com/sns/v2/home?region=eu-west-1#/applications>
+[WIKI]: <../../wiki>
+[Library Overview]: <ReadMeImages/LibraryDiagram.png>
+[DynamoDBSnapshot]: <ReadmeImages/DynamoDBSnapshot.png>
