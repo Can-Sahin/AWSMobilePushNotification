@@ -14,10 +14,12 @@ Designed initially for integrating `Mobile Push Notification` with scalable, ser
 
 - Handles unavailable devices after a publish or optionally sets TimeToLive to clean-up later.
 
-- Optionally writes logs of sent notifications to DynamoDB for querying later. 
+- Optionally writes logs of sent notifications to DynamoDB for querying later.
 
 
 ## Overview
+**Check the [WIKI] page for API Reference and detailed explanations**
+
 Simplified visual summary
 ![Library Overview]
 
@@ -58,7 +60,7 @@ Requirements: `.NET Standards 1.6` and Amazon SNS , Amazon DynamoDB
 3. Its ready to operate...
 
 ## Example Code
-Check [WIKI] page for detailed explanation
+Check the [WIKI] page for detailed explanation
 
 Implement the abstract class required for the any request to the library (for accessing AWS resources and configuration)
 
@@ -179,7 +181,7 @@ List<PublishToSNSResult> results = await request.SendAsync();
 
 ```
 
-**Check [WIKI] page for API Reference and detailed explanations**
+**Check the [WIKI] page for API Reference and detailed explanations**
 
 # License
 MIT
