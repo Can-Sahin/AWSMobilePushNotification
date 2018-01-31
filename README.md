@@ -1,5 +1,7 @@
 # AWSMobilePushNotification
-Serverless Mobile-Push-Notification server-side client and database abstraction/management for sending mobile push notifications to APNS and GCM utilizing [Amazon DynamoDB] and [Amazon SimpleNotificationService] implemented with .NET (Standards 1.6)
+Serverless Mobile-Push-Notification server-side client and database abstraction/management for sending mobile push notifications to APNS and GCM utilizing [Amazon DynamoDB] and [Amazon SimpleNotificationService] implemented with .NET (Standards 1.6).
+
+ It **maps** your 'server-side defined `User` concept TO push notification sendable devices/platforms/endpoints and handles the management. Which gives you the ability to create a Mobile Push Notification service at your server-side only working and dealing with the `Users` of your application.
 
 Designed initially for integrating `Mobile Push Notification` with scalable, serverless and stateless environments, like AWS Lambda
 
@@ -30,7 +32,7 @@ All the functions follows the same pattern, like AWSSDK.
 3) Send the request async
 4) Evaluate the response
 
-## Glossary and Undestanding the working logic
+## Glossary and Understanding the working logic
 Library uses DynamoDB as the database and its incredibly fast. It creates and handles tables for certain functions, but the tables are available to you for adding extra functionalities or queries that are up to you.
 
 Library provides an abstraction to your back-end's `Users` and internally stores / matches them as notification-sendable devices, letting you to work with only back-end specific identifiers which is called `User` in this library. A `User` can have multiple `Subscribers`, meaning mutliple devices that is available for sending a notification. For instance, a user logged in to multiple devices with the same account. In the absence of `User`, (Userless back-end logic) 'Device Identifier' of the mobile device can be used as an user identifier. 
