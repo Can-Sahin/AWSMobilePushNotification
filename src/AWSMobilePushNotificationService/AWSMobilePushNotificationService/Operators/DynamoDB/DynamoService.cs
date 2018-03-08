@@ -3,6 +3,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using System.Threading.Tasks;
 using AWSMobilePushNotificationService.Model.DynamoDb.Tables;
+using Amazon.DynamoDBv2.DocumentModel;
 
 namespace AWSMobilePushNotificationService.Operators.DynamoDB
 {
@@ -120,7 +121,7 @@ namespace AWSMobilePushNotificationService.Operators.DynamoDB
                     // throw new DynamoDBItemNotFoundException(item.PrimaryKey);
                 }
             }
-            
+
             await DbContext.DeleteAsync(item);
         }
 
@@ -145,6 +146,11 @@ namespace AWSMobilePushNotificationService.Operators.DynamoDB
             return await DbContext.QueryAsync<T>(hashKeyValue, operationConfig).GetRemainingAsync();
         }
 
+        public async Task<List<T>> QueryGetAll<T>(object hashKeyValue, QueryOperator op, IEnumerable<object> values, DynamoDBOperationConfig operationConfig = null)
+        {
+            return await DbContext.QueryAsync<T>(hashKeyValue, op, values, operationConfig).GetRemainingAsync();
+        }
+
         public async Task<List<T>> QuerySecondaryIndexGetAll<T>(object hashKeyValue, string indexName, DynamoDBOperationConfig operationConfig = null)
         {
             if (operationConfig != null)
@@ -154,7 +160,15 @@ namespace AWSMobilePushNotificationService.Operators.DynamoDB
 
             return await DbContext.QueryAsync<T>(hashKeyValue, new DynamoDBOperationConfig { IndexName = indexName }).GetRemainingAsync();
         }
-        
+        public async Task<List<T>> QuerySecondaryIndexGetAll<T>(object hashKeyValue, QueryOperator op, IEnumerable<object> values, string indexName, DynamoDBOperationConfig operationConfig = null)
+        {
+            if (operationConfig != null)
+            {
+                return await DbContext.QueryAsync<T>(hashKeyValue, op, values, operationConfig).GetRemainingAsync();
+            }
+
+            return await DbContext.QueryAsync<T>(hashKeyValue, op, values, new DynamoDBOperationConfig { IndexName = indexName }).GetRemainingAsync();
+        }
         public async Task<List<T>> QuerySecondaryIndexGetAllWithFilter<T>(object hashKeyValue, string indexName, List<ScanCondition> queryFilter, DynamoDBOperationConfig operationConfig = null)
         {
             if (operationConfig != null)

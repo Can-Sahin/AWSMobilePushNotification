@@ -34,17 +34,17 @@ namespace AWSMobilePushNotificationService.Operators.Publish
                 throw new UserNotFoundException(model.UserId);
             }
             List<PublishToSNSResult> results = new List<PublishToSNSResult>();
-            // foreach (var subscriber in subscribers)
-            // {
-            //     var result = await PublishToSubscriberAsync(subscriber);
-            //     results.Add(result);
-            // }
-            await Task.WhenAll(subscribers.Select(subscriber => {
-                return PublishToSubscriberAsync(subscriber).ContinueWith((tresult => {
-                    var result = tresult.Result;
-                    results.Add(result);
-                }));
-            }));
+            foreach (var subscriber in subscribers)
+            {
+                var result = await PublishToSubscriberAsync(subscriber);
+                results.Add(result);
+            }
+            // await Task.WhenAll(subscribers.Select(subscriber => {
+            //     return PublishToSubscriberAsync(subscriber).ContinueWith((tresult => {
+            //         var result = tresult.Result;
+            //         results.Add(result);
+            //     }));
+            // }));
             return results;
         }
         public async Task<PublishToSNSResult> PublishToSubscriberAsync(string token)

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Amazon.DynamoDBv2.Model;
 using Amazon.DynamoDBv2.DocumentModel;
-
+using System;
 
 namespace AWSMobilePushNotificationService.Operators.DynamoDB.Table
 {
@@ -30,7 +30,7 @@ namespace AWSMobilePushNotificationService.Operators.DynamoDB.Table
             };
             var userDateIndex = new LocalSecondaryIndex()
             {
-                IndexName = SelfModel.LSITagName,
+                IndexName = SelfModel.LSIName,
                 KeySchema = {
                 new KeySchemaElement {
                     AttributeName = "UserId", KeyType = "HASH" //Partition key
@@ -56,7 +56,7 @@ namespace AWSMobilePushNotificationService.Operators.DynamoDB.Table
                                   },
                                   new AttributeDefinition
                                   {
-                                      AttributeName = "MessageId", // Range
+                                      AttributeName = "SNSMessageId", // Range
                                       AttributeType = "S"
                                   },
                                   new AttributeDefinition
@@ -74,7 +74,7 @@ namespace AWSMobilePushNotificationService.Operators.DynamoDB.Table
                                   },
                                   new KeySchemaElement
                                   {
-                                      AttributeName = "MessageId",
+                                      AttributeName = "SNSMessageId",
                                       KeyType = "RANGE"
                                   },
                               },
@@ -97,18 +97,26 @@ namespace AWSMobilePushNotificationService.Operators.DynamoDB.Table
             }
         }
 
-        public async Task AddLogAsync(SelfModel logEntry, Document document)
+        public async Task AddLogAsync<T>(T logEntry) where T: SelfModel, new()
         {
-            if (Table == null)
-            {
-                Table = Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(dynamoclient, TABLENAME);
-            }
-            document["UserId"] = logEntry.UserId;
-            document["MessageId"] = logEntry.SNSMessageId;
-            document["Date"] = logEntry.Date;
-
-            await Table.PutItemAsync(document);
+            await dynamoService.StoreAsync(logEntry);
         }
 
+        public async Task<List<T>> GetAllLogsWithUserIdAndDate<T>(string userId, DateTime dateMin, DateTime dateMax) where T: SelfModel
+        {
+            IEnumerable<object> values = new List<object> { dateMin, dateMax };
+            List<T> entries = await dynamoService.QuerySecondaryIndexGetAll<T>(userId, QueryOperator.Between, values, SelfModel.LSIName);
+            return entries;
+        }
+        public async Task<List<T>> GetAllLogsWithUserId<T>(string userId) where T: SelfModel
+        {
+            List<T> entries = await dynamoService.QueryGetAll<T>(userId);
+            return entries;
+        }
+        public async Task<List<T>> GetAllLogsWithGSI<T>(string hashValue, string indexName) where T: SelfModel
+        {
+            List<T> entries = await dynamoService.QuerySecondaryIndexGetAll<T>(hashValue,indexName);
+            return entries;
+        }
     }
 }

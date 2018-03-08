@@ -50,10 +50,10 @@ namespace AWSMobilePushNotificationService.Operators.Publish
                     IterativeTagResponseTuple resultTuples = await PublishToIterativeTagAsync(tags);
                     await RemoveUnsuccessfulEndpoints(resultTuples);
                     var returnTuples = resultTuples.Select(t => new Tuple<PublishToSNSResult, PushNotificationSubscriber>(t.Item1, PushNotificationSubscriber.From(t.Item2.Subscriber)));
-                    return new PublishToIterativeTagResult(tag,returnTuples);
+                    return new PublishToIterativeTagResult(tag, returnTuples);
                 case PNTagType.SNSTopic:
                     PublishToSNSResult result = await PublishToSnsTopicTag(tagEntry.SnsTopicArn);
-                    return new PublishToSNSTopicTagResult(tag,result);
+                    return new PublishToSNSTopicTagResult(tag, result);
                 default:
                     throw new TagNotFoundException(tag);
             }
@@ -61,7 +61,8 @@ namespace AWSMobilePushNotificationService.Operators.Publish
 
         private async Task<IterativeTagResponseTuple> PublishToIterativeTagAsync(List<DynamoIterativeTag> entries)
         {
-            List<Task> tasks = new List<Task>();
+            // Parallel tasks are not implemented because of AWS-SDK SNS bug in parellel execution cause high memory usage
+            // List<Task> tasks = new List<Task>();
             IterativeTagResponseTuple resultTuples = new IterativeTagResponseTuple();
             foreach (var tagEntry in entries)
             {
@@ -79,15 +80,11 @@ namespace AWSMobilePushNotificationService.Operators.Publish
                     resultTuples.Add(new Tuple<PublishToSNSResult, DynamoIterativeTag>(failed, tagEntry));
                     continue;
                 }
-                tasks.Add(PublishToEndpointAsync(tagEntry.EndpointArn, message).ContinueWith((tResult) =>
-                {
-                    var result = tResult.Result;
-                    result.UserId = tagEntry.Subscriber.UserId;
-                    resultTuples.Add(new Tuple<PublishToSNSResult, DynamoIterativeTag>(result, tagEntry));
-                }));
 
+                var result = await PublishToEndpointAsync(tagEntry.EndpointArn, message);
+                result.UserId = tagEntry.Subscriber.UserId;
+                resultTuples.Add(new Tuple<PublishToSNSResult, DynamoIterativeTag>(result, tagEntry));
             }
-            await Task.WhenAll(tasks);
             return resultTuples;
         }
         private async Task<PublishToSNSResult> PublishToSnsTopicTag(string snsTopicArn)
@@ -102,7 +99,8 @@ namespace AWSMobilePushNotificationService.Operators.Publish
         }
         private async Task RemoveUnsuccessfulEndpoints(IterativeTagResponseTuple resultTuples)
         {
-            List<Task> tasks = new List<Task>();
+            // Parallel tasks are not implemented because of AWS-SDK SNS bug in parellel execution cause high memory usage
+            // List<Task> tasks = new List<Task>();
 
             foreach (var responseTagTuple in resultTuples)
             {
@@ -112,10 +110,9 @@ namespace AWSMobilePushNotificationService.Operators.Publish
                 if (result.ErrorAlias == ErrorReason.SNSEndpointDisabled
                     || result.ErrorAlias == ErrorReason.SNSEndpointNotFound)
                 {
-                    tasks.Add(unRegisterService.UnRegisterSubscriberAsync(tag.Subscriber.UserId, tag.Subscriber.Token));
+                    await unRegisterService.UnRegisterSubscriberAsync(tag.Subscriber.UserId, tag.Subscriber.Token);
                 }
             }
-            await Task.WhenAll(tasks);
 
         }
     }
