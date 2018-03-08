@@ -12,9 +12,6 @@ namespace AWSMobilePushNotificationService.Operators.DynamoDB.Table
     internal class DynamoLogsTableOperator : DynamoTableOperator<SelfModel>
     {
         protected override string _TABLENAME => SelfModel.RAWTABLENAME;
-
-        private static Amazon.DynamoDBv2.DocumentModel.Table Table;
-
         public DynamoLogsTableOperator(IAWSMobilePushNotificationConfigProvider provider) : base(provider)
         {
 
