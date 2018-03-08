@@ -3,6 +3,17 @@
     <TargetFramework>netstandard1.6</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>AWSMobilePushNotificationService</PackageId>
+    <Authors>Can Sahin</Authors>
+    <Version>1.0.0</Version>
+    <Description>Serverless and Scalable Mobile-Push-Notification server-side client and database abstraction/management for sending mobile push notifications to APNS and GCM utilizing Amazon DynamoDB and Amazon SimpleNotificationService.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>AWS MobilePushNotification SimpleNotificationService SNSMobilePush SNS </PackageTags>
+    <Copyright></Copyright>
+    <PackageProjectUrl>https://github.com/Can-Sahin/AWSMobilePushNotification</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Can-Sahin/AWSMobilePushNotification</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Copyright></Copyright>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.5"/>

@@ -51,7 +51,12 @@ So, to register a notification-sendable endpoint to your system you must specify
 
 ## Getting Started 
 
-Nuget Package will be available soon.
+# Installation
+`PM> Install-Package AWSMobilePushNotificationService`
+
+or
+
+`$ dotnet add package AWSMobilePushNotificationService`
 
 Requirements: `.NET Standards 1.6` and Amazon SNS , Amazon DynamoDB
 
