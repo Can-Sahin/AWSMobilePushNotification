@@ -51,7 +51,7 @@ So, to register a notification-sendable endpoint to your system you must specify
 
 ## Getting Started 
 
-# Installation
+## Installation
 `PM> Install-Package AWSMobilePushNotificationService`
 
 or
